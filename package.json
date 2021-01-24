@@ -1,0 +1,220 @@
+{
+  "name": "electron-ocr",
+  "description": "",
+  "version": "0.0.1",
+  "main": "static/index-bundle.js",
+  "author": {
+    "name": "Stephan Petzl",
+    "email": "stephan.petzl@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "build": {
+    "appId": "app.electron-ocr",
+    "productName": "Electron OCR",
+    "dmg": {
+      "artifactName": "electron-ocr_for_mac_${version}.dmg",
+      "contents": [
+        {
+          "x": 110,
+          "y": 210
+        },
+        {
+          "x": 440,
+          "y": 210,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "electron-ocr_for_win_${version}.exe",
+      "oneClick": "false",
+      "allowToChangeInstallationDirectory": "true"
+    },
+    "msi": {
+      "artifactName": "electron-ocr_for_win_${version}.msi",
+      "oneClick": "false"
+    },
+    "files": [
+      "static/**",
+      "!static/*js.map"
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.developer-tools",
+      "icon": "static/app-icon-mac.icns",
+      "gatekeeperAssess": false,
+      "files": [
+        "!node_modules/opencv-build/opencv/opencv/",
+        "!node_modules/opencv-build/opencv/opencv_contrib/",
+        "!node_modules/opencv-build/opencv/build/3rdparty/",
+        "!node_modules/opencv-build/opencv/build/CMakeFiles/",
+        "!node_modules/opencv-build/opencv/build/data/",
+        "!node_modules/opencv-build/opencv/build/doc/",
+        "!node_modules/opencv-build/opencv/build/downloads/",
+        "!node_modules/opencv-build/opencv/build/include/",
+        "!node_modules/opencv-build/opencv/build/junk/",
+        "!node_modules/opencv-build/opencv/build/modules/",
+        "!node_modules/opencv-build/opencv/build/opencv2/",
+        "!node_modules/opencv-build/opencv/build/share/",
+        "!node_modules/opencv-build/opencv/build/unix-install/"
+      ]
+    },
+    "win": {
+      "icon": "static/app-icon-win.ico",
+      "target": [
+        "msi"
+      ],
+      "extraResources": [
+        {
+          "from": "/Windows/system32/CONCRT140.dll",
+          "to": "../"
+        }
+      ],
+      "files": [
+        "!node_modules/opencv-build/opencv/opencv/",
+        "!node_modules/opencv-build/opencv/opencv_contrib/",
+        "!node_modules/opencv-build/opencv/build/3rdparty/",
+        "!node_modules/opencv-build/opencv/build/CMakeFiles/",
+        "!node_modules/opencv-build/opencv/build/data/",
+        "!node_modules/opencv-build/opencv/build/doc/",
+        "!node_modules/opencv-build/opencv/build/downloads/",
+        "!node_modules/opencv-build/opencv/build/etc/",
+        "!node_modules/opencv-build/opencv/build/include/",
+        "!node_modules/opencv-build/opencv/build/junk/",
+        "!node_modules/opencv-build/opencv/build/lib/",
+        "!node_modules/opencv-build/opencv/build/modules/",
+        "!node_modules/opencv-build/opencv/build/opencv2/",
+        "!node_modules/opencv-build/opencv/build/testdata/",
+        "!node_modules/opencv-build/opencv/build/win-install/",
+        "!node_modules/opencv-build/opencv/build/x64/",
+        "!node_modules/opencv-build/opencv/build/bin/Debug/"
+      ]
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "npmRebuild": false,
+    "asar": false
+  },
+  "scripts": {
+    "electron-rebuild": "cross-env DEBUG=electron-rebuild* electron-rebuild -f",
+    "clean": "rm -rf node_modules",
+    "reinstall": "npm run clean && npm install",
+    "start": "concurrently \"npm run start-dev\" \"npm run start-electron\"",
+    "start-dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "start-electron": "cross-env webpack --config webpack.entrypoint.config.js; NODE_ENV=development ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .",
+    "build": "npm run dist && npm run build-all",
+    "bundle": "cross-env NODE_ENV=production webpack --config webpack.production.config.js",
+    "build-all": "build -lmw",
+    "test": "mocha",
+    "test-dev": "cross-env NODE_ENV=test-dev mocha",
+    "prettier": "prettier --write app/**/*.js",
+    "prettier:staged": "pretty-quick --staged",
+    "postinstall": "electron-builder install-app-deps",
+    "notify": "npx @babel/node scripts/notify.js",
+    "fix-dylibs": "npx @babel/node scripts/fixDylibs.js",
+    "pack-mac": "npm run bundle && electron-builder",
+    "export-mac": "npm-run-all fix-dylibs pack-mac notify",
+    "pack-win": "cross-env DEBUG=electron-builder npm run bundle && electron-builder build --win --x64",
+    "export-win": "npm-run-all pack-win notify"
+  },
+  "keywords": [
+    "ocr"
+  ],
+  "license": "MIT",
+  "dependency-comments": {
+    "fsevents": "fsevents 1.2.9 (used by chokidar) works for packaging windows, but unfortunatelly failed in the notarization process (some binary is not signed). That's why I needed to upgrade it."
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.1.3"
+  },
+  "dependencies": {
+    "chokidar": "^3.4.2",
+    "node-addon-api": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/plugin-proposal-function-sent": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-syntax-optional-chaining": "^7.8.3",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.0.0",
+    "@hot-loader/react-dom": "^16.13.0",
+    "@material-ui/core": "^3.9.1",
+    "@material-ui/icons": "^3.0.2",
+    "acorn": "^7.4.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^8.2.2",
+    "chalk": "^3.0.0",
+    "classnames": "^2.2.6",
+    "concurrently": "^3.6.1",
+    "cross-env": "^5.2.0",
+    "css-loader": "^0.28.11",
+    "electron": "^5.0.6",
+    "electron-builder": "^22.8.1",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-google-analytics": "^0.1.0",
+    "electron-rebuild": "^2.3.4",
+    "fix-path": "^3.0.0",
+    "ftp-deploy": "^2.3.6",
+    "gulp": "^4.0.1",
+    "gulp-clean-dir": "^1.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.3.1",
+    "jest": "^23.6.0",
+    "js-base64": "^3.4.5",
+    "lodash": "^4.17.19",
+    "loglevel": "^1.7.1",
+    "minimist": "^1.2.5",
+    "mocha": "^8.1.2",
+    "node-loader": "^0.6.0",
+    "node-notifier": "^5.4.0",
+    "node-zip": "^1.1.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.16.4",
+    "pretty-quick": "^1.10.0",
+    "react": "^16.13.1",
+    "react-autocomplete": "^1.8.1",
+    "react-beautiful-dnd": "^12.0.0",
+    "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21",
+    "react-image-crop": "^6.0.18",
+    "react-joyride": "^2.2.1",
+    "react-lottie": "^1.2.3",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-sizeme": "^2.5.2",
+    "shelljs": "^0.8.3",
+    "spectron": "^7.0.0",
+    "speed-measure-webpack-plugin": "^1.3.3",
+    "string-argv": "^0.3.1",
+    "style-loader": "^0.21.0",
+    "styled-components": "^5.0.1",
+    "typeface-roboto": "0.0.54",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-node-externals": "^1.7.2",
+    "ws": "^6.1.2"
+  }
+}

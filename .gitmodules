@@ -1,0 +1,6 @@
+[submodule "minicap"]
+	path = minicap
+	url = https://github.com/stoefln/minicap.git
+[submodule "minitouch"]
+	path = minitouch
+	url = https://github.com/stoefln/minitouch.git

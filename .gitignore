@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+.DS_Store
+dist
+build
+.idea
+.vscode
+tests/*
+temp/*
+static/index-bundle.js
+static/main-bundle.js
+static/index-bundle.js.map
+static/main-bundle.js.map
+Repeato-darwin-x64
+app/test/resources/lowres/
+data/debug
