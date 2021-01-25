@@ -136,7 +136,7 @@
   "dependencies": {
     "chokidar": "^3.4.2",
     "node-addon-api": "^3.1.0",
-    "node-native-ocr": "0.0.2"
+    "node-native-ocr": "0.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
