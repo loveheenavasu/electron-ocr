@@ -53,7 +53,7 @@ class App extends Component {
       .then(result => {
         console.timeEnd('recognize')
         this.setResult(result)
-      }) 
+      })
   }
 
   render() {

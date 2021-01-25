@@ -201,7 +201,8 @@ function createWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       webSecurity: false,
-      nodeIntegration: true
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true
     }
   })
   win.once('ready-to-show', () => {

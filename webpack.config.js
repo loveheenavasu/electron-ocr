@@ -10,13 +10,7 @@ const smp = new SpeedMeasurePlugin()
 const config = {
   devtool: 'cheap-module-eval-source-map',
   entry: {
-    main: [
-      '@babel/polyfill',
-      'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:3000',
-      'webpack/hot/only-dev-server',
-      './app/main.js'
-    ]  
+    main: ['@babel/polyfill', './app/main.js']
   },
   mode: 'development',
   output: {
@@ -42,7 +36,6 @@ const config = {
       },
       {
         test: /\.(js)$/,
-        use: 'react-hot-loader/webpack',
         include: /node_modules/
       }
     ]
