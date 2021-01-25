@@ -1,6 +1,6 @@
 # OCR Application based on node-native-ocr module 
 
-Testing the node-native-ocr node module with electron
+Testing the [node-native-ocr](https://github.com/stoefln/node-native-ocr) node module with electron
 
 ## Installation
 
