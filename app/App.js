@@ -1,14 +1,12 @@
+import { hot } from 'react-hot-loader/root'
 import React, { Component } from 'react'
 import { HashRouter, Route } from 'react-router-dom'
-import { hot } from 'react-hot-loader/root'
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles'
-const path = require('path')
+// const path = require('path')
 import electron from 'electron'
-
-//import { recognize } from 'ocr'
-
-import fs from 'fs-extra'
 import { Button } from '@material-ui/core'
+
+import { TestVariable } from './aws'
 
 const theme = createMuiTheme({})
 
@@ -28,8 +26,8 @@ class App extends Component {
       dbStore: props.dbStore,
       uiStore: props.uiStore
     }
-
-    this.appVersion = electron.remote.app.getVersion()
+    console.log(electron, 'electron')
+    // this.appVersion = electron.remote.app.getVersion()
     // make sure the folder structure is created for saving files
   }
 
@@ -43,17 +41,17 @@ class App extends Component {
   }
 
   testOcr = () => {
-    const { recognize } = require('node-native-ocr')
+    // const { recognize } = require('node-native-ocr')
 
-    const filepath = path.join(electron.remote.app.getAppPath(), 'static', '505.jpg')
+    // const filepath = path.join(electron.remote.app.getAppPath(), 'static', '505.jpg')
     console.time('recognize')
 
-    fs.readFile(filepath)
-      .then(recognize)
-      .then(result => {
-        console.timeEnd('recognize')
-        this.setResult(result)
-      })
+    // fs.readFile(filepath)
+    //   .then(recognize)
+    //   .then(result => {
+    //     console.timeEnd('recognize')
+    //     this.setResult(result)
+    //   })
   }
 
   render() {
